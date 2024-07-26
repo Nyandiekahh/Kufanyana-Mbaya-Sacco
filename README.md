@@ -1,71 +1,160 @@
-# Getting Started with Create React App
+![alt text](image.png)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Kufanyana Mbaya Sacco Limited
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+Kufanyana Mbaya Sacco Limited is a web application designed to provide a platform for members to apply for loans, join the SACCO, and manage their financial activities. This app integrates with a PostgreSQL database to handle member and loan information securely and efficiently.
 
-### `npm start`
+## Table of Contents
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Contributing](#contributing)
+- [License](#license)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- **Member Management**: View and select members for loan guarantees.
+- **Loan Application**: Apply for loans with details including amount and purpose.
+- **Join Application**: Apply to become a member of the SACCO.
+- **Responsive Design**: The application is optimized for both desktop and mobile views.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies Used
 
-### `npm run build`
+- **Frontend**:
+  - React
+  - Material-UI
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Backend**:
+  - Node.js
+  - Express
+  - PostgreSQL
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Database**:
+  - PostgreSQL
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Installation
 
-### `npm run eject`
+### Prerequisites
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Node.js**: Ensure you have Node.js installed. You can download it from [nodejs.org](https://nodejs.org/).
+2. **PostgreSQL**: Ensure PostgreSQL is installed and running. You can download it from [postgresql.org](https://www.postgresql.org/download/).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Clone the Repository
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+git clone https://github.com/your-repo/kufanyana-mbaya-sacco.git
+cd kufanyana-mbaya-sacco
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Backend Setup
 
-## Learn More
+1. **Navigate to the Backend Directory**:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   cd backend
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Install Dependencies**:
 
-### Code Splitting
+   ```bash
+   npm install
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. **Configure the Database**:
 
-### Analyzing the Bundle Size
+   - Edit `server.js` to ensure the PostgreSQL connection parameters match your database setup.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+4. **Start the Server**:
 
-### Making a Progressive Web App
+   ```bash
+   npm start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   The backend server will run on `http://localhost:5001`.
 
-### Advanced Configuration
+### Frontend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. **Navigate to the Frontend Directory**:
 
-### Deployment
+   ```bash
+   cd ../frontend
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+2. **Install Dependencies**:
 
-### `npm run build` fails to minify
+   ```bash
+   npm install
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Kufanyana-Mbaya-Sacco
+3. **Start the Frontend**:
+
+   ```bash
+   npm start
+   ```
+
+   The frontend will be accessible at `http://localhost:3000`.
+
+## Usage
+
+1. **Viewing Members**: Go to the main page to view and select members for loan guarantees.
+2. **Applying for Loans**: Click the "Apply for Loan Now" button to open the loan application form.
+3. **Joining the SACCO**: Click the "Join Us Now" button to open the membership application form.
+
+## API Endpoints
+
+### `GET /api/members`
+
+- **Description**: Fetches a list of all members.
+- **Response**: A JSON array of member objects.
+
+### `POST /api/apply-loan`
+
+- **Description**: Submits a loan application.
+- **Request Body**:
+  ```json
+  {
+    "name": "string",
+    "email": "string",
+    "phoneNumber": "string",
+    "loanAmount": "number",
+    "loanPurpose": "string",
+    "guarantorId": "number"
+  }
+  ```
+- **Response**: Status message indicating success or failure.
+
+### `POST /api/join`
+
+- **Description**: Submits a join application for new members.
+- **Request Body**:
+  ```json
+  {
+    "name": "string",
+    "email": "string",
+    "phoneNumber": "string",
+    "address": "string",
+    "occupation": "string"
+  }
+  ```
+- **Response**: Status message indicating success or failure.
+
+## Contributing
+
+Contributions are welcome! Please follow these steps to contribute:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes.
+4. Commit your changes (`git commit -am 'Add new feature'`).
+5. Push to the branch (`git push origin feature/YourFeature`).
+6. Create a new Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

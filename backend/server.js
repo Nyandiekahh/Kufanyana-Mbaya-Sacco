@@ -46,7 +46,7 @@ app.post('/api/apply-loan', async (req, res) => {
 app.post('/api/join', async (req, res) => {
   try {
     const { name, email, phoneNumber, address, occupation } = req.body;
-    const query = 'INSERT INTO members (name, email, phonenumber, address, occupation) VALUES ($1, $2, $3, $4, $5)';
+    const query = 'INSERT INTO members (name, email, phoneNumber, address, occupation) VALUES ($1, $2, $3, $4, $5)';
     await pool.query(query, [name, email, phoneNumber, address, occupation]);
     res.status(201).send('Join application received');
   } catch (error) {

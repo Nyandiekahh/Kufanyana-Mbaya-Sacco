@@ -1,0 +1,47 @@
+/* src/global.css */
+body {
+    background-color: #f0f0f0; /* Very light gray background color */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; /* Ensure consistent font */
+  }
+  
+  /* Animation for floating dots */
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0); }
+  }
+  
+  .dot {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    animation: float 4s infinite ease-in-out;
+    /* Default size, overridden by inline styles */
+    width: 10px;
+    height: 10px;
+  }
+  
+  .dot:nth-child(odd) {
+    animation-duration: 6s;
+  }
+  .dot:nth-child(even) {
+    animation-duration: 8s;
+  }
+  
+  /* Gradient background animation */
+  @keyframes gradientShift {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+  }
+  
+  .gradient-background {
+    background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    position: relative; /* Ensure the container is positioned */
+    min-height: 100vh; /* Make sure the container covers the full viewport height */
+  }
+  

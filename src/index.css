@@ -1,0 +1,8 @@
+/* Update the body style to enable scrolling */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #d3d3d3; /* Light grey background */
+  overflow: auto; /* Allow scrolling */
+}

@@ -42,10 +42,10 @@ function Header() {
               sx={{ mt: 1 }}
             >
               <MenuItem onClick={handleMenuClose} component={Link} to="/">Home</MenuItem>
-              <MenuItem onClick={handleMenuClose} component={Link} to="/membership">Membership</MenuItem>
+              {/* <MenuItem onClick={handleMenuClose} component={Link} to="/membership">Membership</MenuItem>
               <MenuItem onClick={handleMenuClose} component={Link} to="/savings">Savings</MenuItem>
               <MenuItem onClick={handleMenuClose} component={Link} to="/loans">Loans</MenuItem>
-              <MenuItem onClick={handleMenuClose} component={Link} to="/contact">Contact Us</MenuItem>
+              <MenuItem onClick={handleMenuClose} component={Link} to="/contact">Contact Us</MenuItem> */}
               <MenuItem onClick={handleMenuClose} component={Link} to="/about">About Us</MenuItem>
               <MenuItem onClick={handleMenuClose} component={Link} to="/terms">Terms and Conditions</MenuItem>
             </Menu>
@@ -53,10 +53,10 @@ function Header() {
         ) : (
           <div style={{ flexGrow: 1 }}>
             <Button color="inherit" component={Link} to="/">Home</Button>
-            <Button color="inherit" component={Link} to="/membership">Membership</Button>
+            {/* <Button color="inherit" component={Link} to="/membership">Membership</Button>
             <Button color="inherit" component={Link} to="/savings">Savings</Button>
             <Button color="inherit" component={Link} to="/loans">Loans</Button>
-            <Button color="inherit" component={Link} to="/contact">Contact Us</Button>
+            <Button color="inherit" component={Link} to="/contact">Contact Us</Button> */}
             <Button color="inherit" component={Link} to="/about">About Us</Button>
             <Button color="inherit" component={Link} to="/terms">Terms and Conditions</Button>
           </div>

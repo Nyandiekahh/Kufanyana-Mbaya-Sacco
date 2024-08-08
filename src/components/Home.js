@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Box, Container, Grid, Paper, Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Typography, Box, Container, Grid, Paper, Button, Dialog, DialogTitle, DialogContent, TextField, DialogActions, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { ArrowForward as ArrowForwardIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import Clock from './Clock';
 
 const Home = () => {
   const [openLoanDialog, setOpenLoanDialog] = useState(false);
@@ -21,9 +23,10 @@ const Home = () => {
     occupation: '',
   });
   const [members, setMembers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5001/members')
+    fetch('http://localhost:5001/api/members')
       .then(response => response.json())
       .then(data => setMembers(data))
       .catch(error => console.error('Error fetching members:', error));
@@ -33,13 +36,14 @@ const Home = () => {
   const handleLoanClose = () => setOpenLoanDialog(false);
   const handleJoinClickOpen = () => setOpenJoinDialog(true);
   const handleJoinClose = () => setOpenJoinDialog(false);
+  const handleLoginClick = () => navigate('/login');
 
   const handleLoanChange = (e) => setLoanForm({ ...loanForm, [e.target.name]: e.target.value });
   const handleJoinChange = (e) => setJoinForm({ ...joinForm, [e.target.name]: e.target.value });
 
   const handleLoanSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:5001/apply-loan', {
+      const response = await fetch('http://localhost:5001/api/apply-loan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loanForm),
@@ -57,7 +61,7 @@ const Home = () => {
 
   const handleJoinSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:5001/join', {
+      const response = await fetch('http://localhost:5001/api/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(joinForm),
@@ -75,16 +79,14 @@ const Home = () => {
 
   return (
     <Container maxWidth="lg">
-      {/* Hero Section */}
+      <Clock /> {/* Add Clock component here */}
+
       <Box
         sx={{
           padding: { xs: '80px 0', sm: '120px 0' },
           color: 'white',
           textAlign: 'center',
           backgroundColor: '#0288d1',
-          backgroundImage: 'url(/path/to/hero-image.jpg)', // Add a background image if you have one
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
         }}
       >
         <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
@@ -98,7 +100,6 @@ const Home = () => {
         </Button>
       </Box>
 
-      {/* Overview Section */}
       <Box sx={{ padding: 8, textAlign: 'center', backgroundColor: '#f5f5f5' }}>
         <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
           Discover the Difference
@@ -108,7 +109,6 @@ const Home = () => {
         </Typography>
       </Box>
 
-      {/* Features Section */}
       <Box sx={{ padding: 8, textAlign: 'center' }}>
         <Typography variant="h4" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
           Our Key Services
@@ -147,7 +147,6 @@ const Home = () => {
         </Grid>
       </Box>
 
-      {/* Call to Action */}
       <Box
         sx={{
           padding: { xs: '80px 0', sm: '120px 0' },
@@ -167,6 +166,9 @@ const Home = () => {
         </Button>
         <Button variant="contained" color="secondary" endIcon={<ArrowForwardIcon />} onClick={handleLoanClickOpen}>
           Apply for Loan Now
+        </Button>
+        <Button variant="contained" color="secondary" onClick={handleLoginClick}>
+          Login
         </Button>
       </Box>
 

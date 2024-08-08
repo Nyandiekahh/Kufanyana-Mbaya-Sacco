@@ -1,8 +1,10 @@
 // Import dependencies
-const { Pool } = require('pg');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { Pool } = require('pg');
 
 // Create an Express app
 const app = express();
@@ -18,41 +20,58 @@ const pool = new Pool({
   port: 5432,
 });
 
-// Endpoint to get members (for the guarantor dropdown)
-app.get('/api/members', async (req, res) => {
+// Secret key for JWT
+const JWT_SECRET = 'your_jwt_secret'; // Replace with a strong secret key
+
+// Register endpoint
+app.post('/api/register', async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, name FROM members');
-    res.status(200).json(result.rows);
+    const { email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await pool.query('INSERT INTO users (email, password) VALUES ($1, $2)', [email, hashedPassword]);
+    res.status(201).send('User registered');
   } catch (error) {
-    console.error('Error fetching members:', error);
-    res.status(500).send('Error fetching members');
+    console.error('Error registering user:', error);
+    res.status(500).send('Error registering user');
   }
 });
 
-// Endpoint to apply for a loan
-app.post('/api/apply-loan', async (req, res) => {
+// Login endpoint
+app.post('/api/login', async (req, res) => {
   try {
-    const { name, email, phoneNumber, loanAmount, loanPurpose, guarantorId } = req.body;
-    const query = 'INSERT INTO loans (name, email, phoneNumber, loanAmount, loanPurpose, guarantor_id) VALUES ($1, $2, $3, $4, $5, $6)';
-    await pool.query(query, [name, email, phoneNumber, loanAmount, loanPurpose, guarantorId]);
-    res.status(201).send('Loan application received');
+    const { email, password } = req.body;
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const user = result.rows[0];
+
+    if (user && await bcrypt.compare(password, user.password)) {
+      const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+      res.json({ token });
+    } else {
+      res.status(401).send('Invalid credentials');
+    }
   } catch (error) {
-    console.error('Error saving loan application:', error);
-    res.status(500).send('Error saving loan application');
+    console.error('Error logging in:', error);
+    res.status(500).send('Error logging in');
   }
 });
 
-// Endpoint to join the SACCO
-app.post('/api/join', async (req, res) => {
-  try {
-    const { name, email, phoneNumber, address, occupation } = req.body;
-    const query = 'INSERT INTO members (name, email, phoneNumber, address, occupation) VALUES ($1, $2, $3, $4, $5)';
-    await pool.query(query, [name, email, phoneNumber, address, occupation]);
-    res.status(201).send('Join application received');
-  } catch (error) {
-    console.error('Error saving join application:', error);
-    res.status(500).send('Error saving join application');
-  }
+// Middleware to verify JWT
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
+
+// Example protected route
+app.get('/api/protected', authenticateToken, (req, res) => {
+  res.send('This is a protected route');
 });
 
 // Start the server
